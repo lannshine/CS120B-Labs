@@ -1,8 +1,8 @@
 /*
- * yzhan644_lab02_part1.c
+ * yzhan644_lab1_part1.c
  *
- * Created: 4/3/2019 3:01:03 PM
- * Author : ucrcse
+ * Created: 4/7/2019 11:50:07 PM
+ * Author : 2710230
  */ 
 
 #include <avr/io.h>
@@ -16,16 +16,16 @@ int main(void)
     while(1)
     {
         // 1) Read input
-        tmpA = PINA & 0x01;
+        tmpA = PINA;// & 0x01;
         // 2) Perform computation
-        // if PA0 is 1, set PB1PB0 = 01, else = 10
-        if (tmpA == 0x01) { // True if PA0 is 1
-            tmpB = (tmpB & 0xFC) | 0x01; // Sets tmpB to bbbbbb01
-            // (clear rightmost 2 bits, then set to 01)
+        //
+        if (tmpA == 0x01) { //
+            tmpB = (tmpB & 0xFC) | 0x01; // Sets tmpB to bbbbbb00
+            // (clear rightmost 2 bits, then set to 00)
         }
         else {
-            tmpB = (tmpB & 0xFC) | 0x02; // Sets tmpB to bbbbbb10
-            // (clear rightmost 2 bits, then set to 10)
+            tmpB = (tmpB & 0xFC) | 0x00; // Sets tmpB to bbbbbb00
+            // (clear rightmost 2 bits, then set to 00)
         }
         // 3) Write output
         PORTB = tmpB;
