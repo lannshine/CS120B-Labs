@@ -38,7 +38,7 @@ int main(void)
             // (clear rightmost 3 bits, then set to 010)
         }
         else {
-            tmpC = (tmpC & 0xF8) | 0x80; // Sets tmpC to 1000000
+            tmpC = (tmpC & 0xF8) | 0x00; // Sets tmpC to bbbbb000
             // (clear rightmost 3 bits, then set to 000)
         }
         // 3) Write output
