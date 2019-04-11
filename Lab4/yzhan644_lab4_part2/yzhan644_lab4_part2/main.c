@@ -16,8 +16,7 @@ int main(void)
 	DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
 	DDRC = 0xFF; PORTC = 0x07; // Configure port C's 8 pins as outputs,
 							   // initialize PORTC to 7
-	unsigned char tmpA = 0x00; // intermediate variable used for port updates
-	unsigned char tmpC = 0x00;
+	unsigned char tmpC = 0x00; // intermediate variable used for port updates
 	unsigned char incre = 0x00;
 	unsigned char decre = 0x00;
 	unsigned char reset = 0x00;
