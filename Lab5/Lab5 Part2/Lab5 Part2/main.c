@@ -6,147 +6,121 @@
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  */
-/*
 
 #include <avr/io.h>
-enum States { Start, zero, one, two, three, four, five, six, seven, eight, nine } state;
+#define F_CPU 8000000UL
+#include <util/delay.h>
+
+enum States { Start, Wait, Increment, Decrement, Reset } state;
 
 int main(void)
 {
-	DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
-	DDRD = 0xFF; PORTD = 0x00; // Configure port D's 8 pins as outputs
+	DDRA = 0x00; PORTA = 0xFF; // Configure port A as inputs
+	DDRD = 0xFF; PORTD = 0x00; // Configure port D as outputs
 	state = Start;
-	unsigned char tmpA;
-	unsigned char tmpD;
+	unsigned char tmpA = 0x00;
+	unsigned char A0 = 0;
+	unsigned char A1 = 0;
+	unsigned char count = 0;
 
     while (1)
     {
 		tmpA = ~PINA;
+		A0 = (tmpA & 0x01);
+		A1 = (tmpA & 0x02);
 		switch(state)
 		{
 			case Start:
-				tmpD = 0x00;
-				state = zero;
+				count = 0;
+				state = Wait;
 				break;
 			
-			case zero:
-				if (tmpA == 0x01)
+			case Wait:
+				if (!A1 && A0)
 				{
-					tmpD = 0x00;
-					state = PoundPressed;
-					break;
+					if (count < 9)
+					{
+						count++;
+					}
+					state = Increment;
+				}
+				else if (A1 && !A0)
+				{
+					if (count > 0)
+					{
+						count--;
+					}
+					state = Decrement;
+				}
+				else if (A1 && A0)
+				{
+					count = 0;
+					state = Reset;
 				}
 				else
 				{
-					state = WaitPound;
-					break;
+					state = Wait;
 				}
+				break;
+				
+			case Increment:
+				if (!A1 && A0)
+				{
+					state = Increment;
+				}
+				else if (A1 && !A0)
+				{
+					count--;
+					state = Decrement;
+				}
+				else if (A1 && A0)
+				{
+					count = 0;
+					state = Reset;
+				}
+				else
+				{
+					state = Wait;
+				}
+				break;
+				
+			case Decrement:
+			if (!A1 && A0)
+			{
+				count++;
+				state = Increment;
+			}
+			else if (A1 && !A0)
+			{
+				state = Decrement;
+			}
+			else if (A0 && A1)
+			{
+				count = 0;
+				state = Reset;
+			}
+			else
+			{
+				state = Wait;
+			}
+			break;
 			
-			case one:
-				if (tmpA == 0x04)
-				{
-					tmpD = 0x00;
-					state = PoundPressed;
-					break;
-				}
-				else if (tmpA == 0x00) {
-					tmpD = 0x00;
-					state = WaitY;
-					break;
-				}
-				else {
-					tmpD = 0x00;
-					state = WaitPound;
-					break;
-				}
+			case Reset:
+			if (!A0 && !A1)
+			{
+				state = Wait;
+			}
+			else
+			{
+				state = Reset;
+			}
+			break;
 			
-			case WaitY:
-				if (tmpA == 0x00)
-				{
-					tmpD = 0x00;
-					state = WaitY;
-					break;
-				} 
-				else if (tmpA == 0x02)
-				{
-					tmpD = 0x01;
-					state = Unlock;
-					break;
-				}
-				else
-				{
-					tmpD = 0x00;
-					state = WaitPound;
-					break;
-				}
-		
-			case Unlock:
-				if (tmpA == 0x80)
-				{
-					tmpD = 0x00;
-					state = WaitPound;
-					break;
-				}
-				else
-				{
-					tmpD = 0x01;
-					state = Unlock;
-					break;
-				}
+		default:
+			state = Wait;
 		}
-			
-		PORTD = tmpD;
-    }
-}
-
-*/
-
-#include <avr/io.h>
-
-unsigned char GetBit(unsigned char x, unsigned char k) {
-	return ((x & (0x01 << k)) != 0);
-}
-
-int main(void)
-{
-    DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
-    DDRD = 0xFF; PORTD = 0x00; // Configure port D's 8 pins as outputs, initialize PORTD to 0
-    unsigned char tmpA = 0x00; // intermediate variable used for port updates
-    unsigned char tmpD = 0x00; 
-	unsigned char lastA = 0x00;
-    unsigned char incre = 0x00;
-    unsigned char decre = 0x00;
-    unsigned char reset = 0x00;
-    
-    while(1)
-    {
-        // 1) Read Inputs and assign to variables
-		tmpA = ~PINA;
-        if (tmpA != lastA)
-        {
-			tmpD = PORTD;
-			incre = GetBit(tmpA, 0);
-			decre = GetBit(tmpA, 1);
-			reset = (incre && decre);
-			
-			// 2) Perform Computation
-			if (incre && (tmpD < 0x09))
-			{
-    			tmpD = tmpD + 1;
-			}
-			if (decre && (tmpD > 0x00))
-			{
-    			tmpD = tmpD - 1;
-			}
-			if(reset)
-			{
-    			tmpD = 0x00;
-			}
-        }
-        
-        // 3) write results to port
-		lastA = tmpA;
-		reset = 0x00;
-        PORTD = tmpD;
-    }
+		
+		PORTD = count;
+		_delay_ms(50);
+	}
 }
