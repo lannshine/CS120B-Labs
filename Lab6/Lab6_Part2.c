@@ -1,7 +1,7 @@
 /*	Karina Rowe (krowe004@ucr.edu) 
  *	Yulin Zhang (yzhan644@ucr.edu)
  *	Lab Section: CS 120B 021
- *	Assignment: Lab #6 Exercise #1
+ *	Assignment: Lab #6 Exercise #2
  *  
  *  Description: Create a simple light game that requires pressing a button
  *  on PA0 while the middle of three LEDs on PB0, PB1, and PB2 is lit. The
