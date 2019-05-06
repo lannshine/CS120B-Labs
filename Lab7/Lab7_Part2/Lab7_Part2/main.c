@@ -74,7 +74,7 @@ int main(void)
 	DDRD = 0xFF; PORTD = 0x00; // LCD control lines
 	DDRA = 0x00; PORTA = 0xFF; // Configure port A as inputs
 	state = Start;
-	TimerSet(300);
+	TimerSet(100);
 	TimerOn();
 	unsigned char score = 5;
 	unsigned char tmpD = 0x00;
