@@ -1,7 +1,7 @@
 /*	Karina Rowe (krowe004@ucr.edu) 
  *	Yulin Zhang (yzhan644@ucr.edu)
  *	Lab Section: CS 120B 021
- *	Assignment: Lab #10 Exercise #3
+ *	Assignment: Lab #10 Exercise #4
  *  
  *  PB6 is used as audio output, PB0-PB2 used for three LEDs output,
  *  PB3 used as blinking LED output
