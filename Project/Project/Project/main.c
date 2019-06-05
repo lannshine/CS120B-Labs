@@ -1,26 +1,24 @@
 #include <avr/io.h>
-#define Motion (PINB & 0x01)
+#define F_CPU 8000000UL
+#include <util/delay.h>
+#include "ssd1306xled.c"
+#include "ssd1306xledtx.c"
+#include "font6x8.h"
+
+#define TESTING_DELAY 500
+
 
 int main(void)
 {
-    DDRB = 0x00; PORTB = 0xFF;
-	DDRD = 0xFF; PORTD = 0x00;
-	unsigned char led = 0x00;
-	TimerSet(3000);
-	TimerOn();
+	DDRC = 0xFF; PORTC = 0x00;
+	//DDRD = 0xFF; PORTD = 0x00;
 	
-    while (1) 
-    {
-		if (Motion)
-		{
-			led = 0x00;
-		}
-		else
-		{
-			led = 0xFF;
-
-		}
-		
-		PORTD = led;
-    }
+	_delay_ms(100);
+	ssd1306_init();
+	ssd1306_setpos(0,10);
+	ssd1306tx_string("Hello");
+	
+	while (1)
+	{
+	}
 }
