@@ -36,7 +36,7 @@ void ssd1306_stop(void);	// Finish transmission
 // ----------------------------------------------------------------------------
 
 const uint8_t ssd1306_init_sequence [] PROGMEM = {	// Initialization Sequence
-
+/*
 	0xAE,			// Set Display ON/OFF - AE=OFF, AF=ON
 	0xD5, 0xF0,		// Set display clock divide ratio/oscillator frequency, set divide ratio
 	0xA8, 0x3F,		// Set multiplex ratio (1 to 64) ... (height - 1)
@@ -59,7 +59,7 @@ const uint8_t ssd1306_init_sequence [] PROGMEM = {	// Initialization Sequence
 	0x21, 0x00,	0x7f,	// Set Column Address (start,end)
 	//
 	// 0xD6, 0x01,		// Set Zoom In, 0=disabled, 1=enabled
-/*
+*/
 	0xAE,			// Display OFF (sleep mode)
 	0x20, 0x00,		// Set Memory Addressing Mode - 00=Horizontal, 01=Vertical, , 10=Page, 11=Invalid
 	0xB0,			// Set Page Start Address for Page Addressing Mode, 0-7
@@ -79,7 +79,7 @@ const uint8_t ssd1306_init_sequence [] PROGMEM = {	// Initialization Sequence
 	0xDB, 0x20,		// --set vcomh, 0x20,0.77xVcc
 	0x8D, 0x14,		// Charge Pump Setting, 14h = Enable Charge Pump
 	0xAF,			// Display ON in normal mode
-*/
+
 };
 
 // ============================================================================
@@ -88,8 +88,8 @@ const uint8_t ssd1306_init_sequence [] PROGMEM = {	// Initialization Sequence
 // NAME: I2CSW - I2C Simple Writer.
 // Convenience definitions for manipulating PORTB pins
 // NOTE: These definitions are used only internally by the I2CSW library
-#define I2CSW_HIGH(PORT) PORTB |= (1 << PORT)
-#define I2CSW_LOW(PORT) PORTB &= ~(1 << PORT)
+#define I2CSW_HIGH(PORT) PORTC |= (1 << PORT)
+#define I2CSW_LOW(PORT) PORTC &= ~(1 << PORT)
 
 // ----------------------------------------------------------------------------
 
@@ -100,8 +100,8 @@ void i2csw_byte(uint8_t byte);
 // ----------------------------------------------------------------------------
 
 void i2csw_start(void) {
-	DDRB |= (1 << SSD1306_SDA);	// Set port as output
-	DDRB |= (1 << SSD1306_SCL);	// Set port as output
+	DDRC |= (1 << SSD1306_SDA);	// Set port as output
+	DDRC |= (1 << SSD1306_SCL);	// Set port as output
 	I2CSW_HIGH(SSD1306_SCL);	// Set to HIGH
 	I2CSW_HIGH(SSD1306_SDA);	// Set to HIGH
 	I2CSW_LOW(SSD1306_SDA);		// Set to LOW
@@ -113,7 +113,7 @@ void i2csw_stop(void) {
 	I2CSW_LOW(SSD1306_SDA);		// Set to LOW
 	I2CSW_HIGH(SSD1306_SCL);	// Set to HIGH
 	I2CSW_HIGH(SSD1306_SDA);	// Set to HIGH
-	DDRB &= ~(1 << SSD1306_SDA);// Set port as input
+	DDRC &= ~(1 << SSD1306_SDA);// Set port as input
 }
 
 void i2csw_byte(uint8_t byte) {

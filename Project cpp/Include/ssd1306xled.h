@@ -12,18 +12,18 @@
  * Source code available at: https://bitbucket.org/tinusaur/ssd1306xled
  *
  */
-
+#include <avr/io.h>
 #ifndef SSD1306XLED_H
 #define SSD1306XLED_H
 
 // ============================================================================
 
-// -----(+)-------------------->-----> [Vcc]	Pin 1 on the SSD1306 display board
-// -----(-)-------------------->-----> [GND]	Pin 2 on the SSD1306 display board
-#define SSD1306_SCL		PORTC & 0x01   // ----> [SCL]	Pin 3 on the SSD1306 display board
-#define SSD1306_SDA		PORTC & 0x02   // ----> [SDA]	Pin 4 on the SSD1306 display board
+// -----(+)--------------------------------> [Vcc]	Pin 1 on the SSD1306 display board
+// -----(-)--------------------------------> [GND]	Pin 2 on the SSD1306 display board
+#define SSD1306_SCL 0  // ----> [SCL]	Pin 3 on the SSD1306 display board
+#define SSD1306_SDA	1  // ----> [SDA]	Pin 4 on the SSD1306 display board
 
-#define SSD1306_SADDR	0x78  // Display IC2 slave address, default 0x78
+#define SSD1306_SADDR	0x3C  // Display IC2 slave address, default 0x3C
 
 // ----------------------------------------------------------------------------
 
