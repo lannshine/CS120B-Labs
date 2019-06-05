@@ -1,44 +1,26 @@
-/*
- * mp3.cpp
+/*	Karina Rowe (krowe004@ucr.edu) 
+ *	Yulin Zhang (yzhan644@ucr.edu)
+ *	Lab Section: CS 120B 021
+ *	Assignment: Lab #9 Exercise #3
+ *  
  *
- * Created: 6/4/2019 11:29:16 PM
- * Author : 2710230
- */ 
+ *	I acknowledge all content contained herein, excluding template or example
+ *	code, is my own original work.
+ */
 
 #include <avr/io.h>
-
+#include "io.c"
 
 int main(void)
 {
-    /* Replace with your application code */
-    while (1) 
-    {
-    }
-}
-
-#include <avr/io.h>
-#define Motion (PINB & 0x01)
-
-int main(void)
-{
-	DDRB = 0x00; PORTB = 0xFF;
-	DDRD = 0xFF; PORTD = 0x00;
-	unsigned char led = 0x00;
-	TimerSet(3000);
-	TimerOn();
+	DDRC = 0xFF; PORTC = 0x00; // LCD data lines
+	DDRD = 0xFF; PORTD = 0x00; // LCD control lines
 	
-	while (1)
-	{
-		if (Motion)
-		{
-			led = 0x00;
-		}
-		else
-		{
-			led = 0xFF;
-
-		}
-		
-		PORTD = led;
-	}
+	// Initializes the LCD display
+	LCD_init();
+	
+	// Starting at position 1 on the LCD screen, writes Hello World
+	LCD_DisplayString(1, "Hello World");
+	
+	while(1) {continue;}
 }
